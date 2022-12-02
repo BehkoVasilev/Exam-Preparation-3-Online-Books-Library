@@ -34,7 +34,6 @@ export function showRegister(ctx) {
     ctx.render(registerTemplate(createSubmitHandler(onRegister)))
 
     async function onRegister(data) {
-        debugger
         if (data.email == '' || data.password == "" || data["confirm-pass"] == "") {
             return alert('All fields are required');
         };

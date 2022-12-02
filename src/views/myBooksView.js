@@ -1,18 +1,16 @@
 import { html, nothing } from "../lib.js";
 import { getAllBooks } from "../api/data.js";
 
-const myBooksTemplate = (hasBookList, cardBookTemplate) => html`
+const myBooksTemplate = (hasOwnBooks, cardBookTemplate) => html`
 <section id="my-books-page" class="my-books">
     <h1>My Books</h1>
     <!-- Display ul: with list-items for every user's books (if any) -->
-    ${user ? html` 
-        <ul class="my-books-list">
-            ${hasBookList.length > 0 ? 
-                html`
-                ${hasBookList.map(cardBookTemplate)}` : 
-                html`<p class="no-books">No books in database!</p>`}
-        </ul>` : 
-    html`<p class="no-books">No books in database!</p>`}
+    ${user ? 
+        html` 
+        ${hasOwnBooks.length > 0 ? 
+            html`<ul class="my-books-list">${hasOwnBooks.map(cardBookTemplate)}</ul>` :
+            html`<p class="no-books">No books in database!</p>`}`: 
+        html`<p class="no-books">No books in database!</p>`}
 </section>`;
 
 
@@ -26,8 +24,8 @@ const cardBookTemplate = (book) => html`
 
 export async function showMyBooks(ctx) {
     const user = ctx.user;
-    const myBooksList = await getAllBooks();
-    const hasBookList = [];
-    myBooksList.map(book => book._ownerId === user._id ? hasBookList.push(book) : nothing);
-    ctx.render(myBooksTemplate(hasBookList, cardBookTemplate));
+    const allBooks = await getAllBooks();
+    const hasOwnBooks = [];
+    allBooks.map(book => book._ownerId === user._id ? hasOwnBooks.push(book) : nothing);
+    ctx.render(myBooksTemplate(hasOwnBooks, cardBookTemplate));
 }

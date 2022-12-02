@@ -15,6 +15,7 @@ const mainRoot = document.getElementById("site-content");
 
 page(decorateContext)
 
+page("/", showCatalog)
 page("/login", showLogin);
 page("/register", showRegister);
 page("/catalog", showCatalog);
